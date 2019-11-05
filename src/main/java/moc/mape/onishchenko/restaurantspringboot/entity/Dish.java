@@ -1,11 +1,12 @@
 package moc.mape.onishchenko.restaurantspringboot.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "dishes")
-public class Dish {
+public class Dish implements Serializable {
     @Id
     @GeneratedValue(generator = "dishIdSequence")
     @SequenceGenerator(

@@ -1,11 +1,12 @@
 package moc.mape.onishchenko.restaurantspringboot.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(generator = "productIdSequence")
     @SequenceGenerator(
@@ -13,10 +14,10 @@ public class Product {
             name = "productIdSequence",
             sequenceName = "products_id_seq",
             allocationSize = 1)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
     public Long getId() {
