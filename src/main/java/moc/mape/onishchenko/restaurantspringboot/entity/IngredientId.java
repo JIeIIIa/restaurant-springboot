@@ -8,6 +8,14 @@ public class IngredientId implements Serializable {
 
     private Long idDish;
 
+    public IngredientId() {
+    }
+
+    public IngredientId(Long idProduct, Long idDish) {
+        this.idProduct = idProduct;
+        this.idDish = idDish;
+    }
+
     public Long getIdProduct() {
         return idProduct;
     }
