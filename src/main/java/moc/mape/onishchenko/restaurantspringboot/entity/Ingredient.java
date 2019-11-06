@@ -16,11 +16,11 @@ public class Ingredient {
     @Column(name = "id_dish")
     private Long idDish;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_product", insertable = false, updatable = false)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dish", insertable = false, updatable = false)
     private Dish dish;
 
@@ -74,14 +74,12 @@ public class Ingredient {
         Ingredient that = (Ingredient) o;
         return Objects.equals(idProduct, that.idProduct) &&
                 Objects.equals(idDish, that.idDish) &&
-                Objects.equals(product, that.product) &&
-                Objects.equals(dish, that.dish) &&
                 Objects.equals(weight, that.weight);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idProduct, idDish, product, dish, weight);
+        return Objects.hash(idProduct, idDish, weight);
     }
 
     @Override
@@ -89,8 +87,6 @@ public class Ingredient {
         return "Ingredient{" +
                 "idProduct=" + idProduct +
                 ", idDish=" + idDish +
-                ", product=" + product +
-                ", dish=" + dish +
                 ", weight=" + weight +
                 '}';
     }
