@@ -2,6 +2,7 @@ package moc.mape.onishchenko.restaurantspringboot.controller;
 
 import moc.mape.onishchenko.restaurantspringboot.dto.UserDto;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
+import moc.mape.onishchenko.restaurantspringboot.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,8 +26,14 @@ import static java.util.Collections.singletonList;
 public class RegistrationController {
     static final String NEW_USER_ATTRIBUTE_NAME = "userDto";
 
+    private final UserInfoService userInfoService;
+
     @Value("${debug:false}")
     private boolean debug;
+
+    public RegistrationController(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
+    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView registrationPage() {
@@ -42,7 +49,7 @@ public class RegistrationController {
     public ModelAndView registrationNewUser(@ModelAttribute(NEW_USER_ATTRIBUTE_NAME) UserDto userDto,
                                             ModelAndView modelAndView,
                                             HttpServletRequest request) {
-        if (true) {
+        if (false) {
             modelAndView.setViewName("registration");
             userDto.setPassword("");
             userDto.setPasswordConfirmation("");
@@ -50,6 +57,8 @@ public class RegistrationController {
 
             return modelAndView;
         }
+
+        userInfoService.register(userDto);
 
         UriComponents uriComponents = UriComponentsBuilder.newInstance()
                 .path("/user/{login}/")
