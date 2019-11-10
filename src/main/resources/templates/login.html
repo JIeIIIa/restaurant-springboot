@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <title>Login</title>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<h2>
+    Authorization
+</h2>
+<form th:action="@{/j_spring_security_check}" method="POST">
+    <!--/*@thymesVar id="securityLastExceptionMessage" type="java.lang.String"*/-->
+    <div th:if="${securityLastExceptionMessage}">
+        <div th:text="${securityLastExceptionMessage}">Error</div>
+    </div>
+    <div>
+        <label for="j_login">Login</label>
+        <input type="text"
+               id="j_login" name="j_login">
+    </div>
+    <div>
+        <label for="j_password">
+            Password
+        </label>
+        <input id="j_password" name="j_password">
+    </div>
+    <div>
+        <button type="submit">
+            Log In
+        </button>
+    </div>
+</form>
+<div>
+    <span>Don’t have an account?</span>
+    <a th:href="@{/registration}">
+        Sing up
+    </a>
+</div>
+
+</body>
+</html>
