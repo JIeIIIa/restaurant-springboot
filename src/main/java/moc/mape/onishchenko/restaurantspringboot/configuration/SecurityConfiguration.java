@@ -1,9 +1,11 @@
 package moc.mape.onishchenko.restaurantspringboot.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and();
         http.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/authorized.html", true)
+                .defaultSuccessUrl("/authorized", true)
                 .failureUrl("/login")
                 .loginProcessingUrl("/j_spring_security_check")
                 .usernameParameter("j_login")
@@ -36,5 +38,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
                 .invalidateHttpSession(true);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
