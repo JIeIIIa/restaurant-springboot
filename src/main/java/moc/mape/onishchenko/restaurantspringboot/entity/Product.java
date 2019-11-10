@@ -20,6 +20,9 @@ public class Product implements Serializable {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "description")
+    private String description = "";
+
     public Long getId() {
         return id;
     }
@@ -36,18 +39,27 @@ public class Product implements Serializable {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return Objects.equals(id, product.id) &&
-                Objects.equals(title, product.title);
+                Objects.equals(title, product.title) &&
+                Objects.equals(description, product.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        return Objects.hash(id, title, description);
     }
 
     @Override
@@ -55,6 +67,7 @@ public class Product implements Serializable {
         return "Product{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
