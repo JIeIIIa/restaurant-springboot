@@ -2,8 +2,8 @@ package moc.mape.onishchenko.restaurantspringboot.util;
 
 import org.springframework.web.servlet.ModelAndView;
 
-public class WebUtils {
-    private WebUtils() {
+public class WebPageUtils {
+    private WebPageUtils() {
 
     }
 

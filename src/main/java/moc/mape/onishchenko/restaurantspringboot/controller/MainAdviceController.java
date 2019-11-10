@@ -1,5 +1,6 @@
 package moc.mape.onishchenko.restaurantspringboot.controller;
 
+import moc.mape.onishchenko.restaurantspringboot.util.WebPageUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,6 @@ public class MainAdviceController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView pageNotFound(HttpServletRequest request) {
 
-        return WebUtils.customPageNotFound(request.getRequestURL().toString());
+        return WebPageUtils.customPageNotFound(request.getRequestURL().toString());
     }
 }

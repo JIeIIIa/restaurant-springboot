@@ -1,5 +1,6 @@
 package moc.mape.onishchenko.restaurantspringboot.controller;
 
+import moc.mape.onishchenko.restaurantspringboot.util.WebPageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -55,6 +56,6 @@ public class CommonErrorController implements ErrorController {
     @RequestMapping(value = "/page-not-found", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView pageNotFound(@RequestParam(name = "url", required = false) String url) {
 
-        return WebUtils.customPageNotFound(url);
+        return WebPageUtils.customPageNotFound(url);
     }
 }
