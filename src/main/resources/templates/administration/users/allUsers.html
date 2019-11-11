@@ -1,0 +1,45 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <title>All users</title>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<h2>
+    All users:
+</h2>
+<table>
+    <thead>
+    <tr>
+        <th> Login </th>
+        <th> Role </th>
+        <th> Action </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${users.empty}">
+        <td colspan="2"> No Users Available </td>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td><span th:text="${user.login}"> Login </span></td>
+        <td><span th:text="${user.role}"> Role </span></td>
+        <td>
+            <a th:href="@{/admin/users/{id}(id=${user.id})}">detail</a>
+            <form th:method="delete" th:action="@{/admin/users/{id}(id=${user.id})}">
+                <input type="submit" value="delete">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

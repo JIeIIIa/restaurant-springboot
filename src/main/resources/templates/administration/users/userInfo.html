@@ -1,0 +1,45 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+
+<head>
+    <title>User details</title>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
+
+<h2 class="card-title font-weight-bold">
+    Registration
+</h2>
+<!--/*@thymesVar id="userDto" type="moc.mape.onishchenko.restaurantspringboot.dto.UserDto"*/-->
+<form action="#" th:action="@{/admin/users/{id}(id=${userDto.id})}" th:object="${userDto}" th:method="PUT">
+    <div>
+        <label for="login">
+            Login
+        </label>
+        <input type="text" id="login"
+               th:field="*{login}">
+    </div>
+
+    <div>
+        <label for="role">
+            Role
+        </label>
+        <select name="role" id="role">
+            <!--/*@thymesVar id="values" type="moc.mape.onishchenko.restaurantspringboot.entity.UserRole[]"*/-->
+            <option th:each="role : ${T(moc.mape.onishchenko.restaurantspringboot.entity.UserRole).values()}"
+                    th:value="${role}" th:text="${role}" th:selected="${userDto.role == role}"></option>
+        </select>
+    </div>
+
+    <button type="submit">
+        Update
+    </button>
+</form>
+</body>
+</html>
