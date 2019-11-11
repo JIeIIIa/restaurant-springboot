@@ -58,4 +58,9 @@ public class CommonErrorController implements ErrorController {
 
         return WebPageUtils.customPageNotFound(url);
     }
+
+    @RequestMapping(value = "/access-denied")
+    public String accessDenied() {
+        return "errors/accessDenied";
+    }
 }

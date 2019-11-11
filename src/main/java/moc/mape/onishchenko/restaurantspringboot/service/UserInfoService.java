@@ -8,6 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -29,5 +32,35 @@ public class UserInfoService {
         userInfo.setRole(UserRole.CLIENT);
 
         userInfoRepository.saveAndFlush(userInfo);
+    }
+
+    public List<UserDto> findAll() {
+        return userInfoRepository.findAllByOrderByLoginUserAsc()
+                .stream()
+                .map(this::toUserDto)
+                .collect(toList());
+    }
+
+    private UserDto toUserDto(UserInfo userInfo) {
+        if (userInfo == null) {
+            return null;
+        }
+        final UserDto userDto = new UserDto();
+        userDto.setId(userInfo.getId());
+        userDto.setLogin(userInfo.getLoginUser());
+        userDto.setRole(userInfo.getRole());
+
+        return userDto;
+    }
+
+    public UserDto findById(Long id) {
+        return userInfoRepository.findById(id)
+                .map(this::toUserDto)
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void delete(Long id) {
+        final UserInfo user = userInfoRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        userInfoRepository.delete(user);
     }
 }
