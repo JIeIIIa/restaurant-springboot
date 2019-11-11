@@ -1,5 +1,6 @@
 package moc.mape.onishchenko.restaurantspringboot.configuration;
 
+import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/index",
                         "/registration")
                 .permitAll()
+                .antMatchers("/admin/**")
+                .hasRole(UserRole.ADMIN.name())
                 .anyRequest().authenticated()
                 .and();
 
