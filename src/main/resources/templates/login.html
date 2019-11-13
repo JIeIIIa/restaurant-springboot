@@ -22,12 +22,12 @@
         <div th:text="${securityLastExceptionMessage}">Error</div>
     </div>
     <div>
-        <label for="j_login">Login</label>
+        <label for="j_login" th:text="#{user.login}">Login</label>
         <input type="text"
                id="j_login" name="j_login">
     </div>
     <div>
-        <label for="j_password">
+        <label for="j_password" th:text="#{user.password}">
             Password
         </label>
         <input id="j_password" name="j_password">
