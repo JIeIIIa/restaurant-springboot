@@ -20,6 +20,7 @@
         <bootstrap.version>4.3.1</bootstrap.version>
         <jquery.version>3.3.1</jquery.version>
         <popper-js.version>1.14.7</popper-js.version>
+        <sass-maven-plugin.version>3.7.0</sass-maven-plugin.version>
         <webjars-locator.version>0.37</webjars-locator.version>
     </properties>
 
@@ -118,6 +119,33 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
+
+            <!-- Sass compiler -->
+            <plugin>
+                <groupId>nl.geodienstencentrum.maven</groupId>
+                <artifactId>sass-maven-plugin</artifactId>
+                <version>${sass-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>update-stylesheets</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <!-- Set source and destination dirs -->
+                            <source>
+                                <directory>${project.basedir}/src/main/sass</directory>
+                            </source>
+                            <destination>${project.basedir}/src/main/resources/static/css</destination>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
