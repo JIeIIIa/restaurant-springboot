@@ -20,7 +20,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/index",
-                        "/registration", "/login")
+                        "/registration", "/login",
+                        "/webjars/**", "/css/**")
                 .permitAll()
                 .antMatchers("/admin/**")
                 .hasRole(UserRole.ADMIN.name())
