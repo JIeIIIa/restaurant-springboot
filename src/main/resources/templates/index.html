@@ -1,11 +1,15 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en">
-<head>
+<head th:replace="~{fragments/profiles/activeProfile :: head (pageTitle = #{pages.index.head.title})}"
+      th:remove="tag">
+
     <meta charset="UTF-8">
     <title>Hello</title>
 </head>
 <body>
-<h1 th:text="HelloWorld ">some text</h1>
+<h1 th:text="HelloWorld">some text</h1>
+
+<div th:replace="~{fragments/profiles/activeProfile :: bottomScripts}" th:remove="tag"></div>
 </body>
 </html>
