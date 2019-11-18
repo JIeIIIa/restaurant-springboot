@@ -20,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/index",
-                        "/registration", "/login",
+                        "/registration", "/login", "/swagger**",
                         "/webjars/**", "/css/**", "/pic/**")
                 .permitAll()
                 .antMatchers("/admin/**")

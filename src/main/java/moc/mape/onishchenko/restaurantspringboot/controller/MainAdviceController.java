@@ -1,5 +1,6 @@
 package moc.mape.onishchenko.restaurantspringboot.controller;
 
+import io.swagger.annotations.Api;
 import moc.mape.onishchenko.restaurantspringboot.util.WebPageUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api(tags = {"Errors"})
 @ControllerAdvice
 public class MainAdviceController {
 
