@@ -1,0 +1,172 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head th:replace="~{fragments/profiles/activeProfile :: head (pageTitle = 'Default page')}"
+      th:remove="tag">
+
+    <title>Default page</title>
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom css styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+
+</head>
+<body>
+
+
+<nav th:fragment="header (activeItem)"
+     th:with="url=${#httpServletRequest.requestURI}"
+     class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
+    <div class="container-fluid ">
+
+        <div class="navbar-collapse collapse dual-nav w-50">
+
+            <ul class="navbar-nav">
+                <li class="nav-item d-inline-flex align-items-center justify-content-center">
+                    <a class="nav-link" href="">Dishes</a>
+                </li>
+                <li class="nav-item d-inline-flex align-items-center justify-content-center">
+                    <a class="nav-link" href="">Orders</a>
+                </li>
+<!--                <li class="nav-item"><a class="nav-link" href="">pinterest</a></li>-->
+            </ul>
+
+        </div>
+
+        <div class="centered d-flex flex-column text-center">
+
+            <a class="navbar-brand m-0" href="#">
+                <img src="http://via.placeholder.com/150x50" alt="">
+            </a>
+
+            <h2 class="tag-line navbar-text">friendly restaurant</h2>
+
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse dual-nav w-50">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item d-inline-flex align-items-center justify-content-center"><a class="nav-link" href="#">About</a></li>
+<!--                <li class="nav-item"><a class="nav-link" href="#">contact</a></li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="#">shop</a></li>-->
+                <li class="nav-item d-inline-flex align-items-center justify-content-center mr-sm-2"
+                    sec:authorize="isAnonymous()">
+                    <a class="btn btn-primary btn-block"
+                       href="#" th:href="@{/login}"
+                       th:text="#{header.signIn}">
+                        Log In
+                    </a>
+                </li>
+
+                <li class="nav-item d-inline-flex align-items-center justify-content-center mr-sm-2"
+                    sec:authorize="isAnonymous()" th:if="${activeItem != 'registration'}">
+                    <a class="btn btn-outline-warning btn-block"
+                       href="#" th:href="@{/registration}"
+                       th:text="#{header.signUp}">
+                        SignUp
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown d-inline-flex align-items-center justify-content-center mr-sm-2"
+                    sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle pr-0 py-0 h-100 d-inline-flex align-items-center justify-content-center"
+                       id="userNavbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <div class="image-container">
+                            <img src="../../static/pic/no_avatar.jpg" th:src="@{/public/user/{login}/avatar(login=${#authentication.name})}">
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right bg-dark border-light"
+                        aria-labelledby="userNavbarDropdownMenuLink">
+                        <li>
+                            <div class="dropdown-header">
+                                <h4>
+                                    <span class="text-info" th:text="#{header.signedInAs}">Signed in as</span>
+                                    <span class="login text-light" sec:authentication="name" id="login">
+                                        SomeLogin
+                                    </span>
+                                </h4>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider border-light"></li>
+                        <li>
+                            <a class="dropdown-item" href="#"
+                               th:href="@{/user/{login}/settings(login=${#authentication.name})}"
+                               th:text="#{header.settings}">
+                                Settings
+                            </a>
+                        </li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a class="dropdown-item" href="#" th:href="@{/administration/adminPanel}"
+                               th:text="#{header.adminPanel}">
+                                Administration
+                            </a>
+                        </li>
+                        <li class="dropdown-divider border-light"></li>
+                        <li>
+                            <a class="dropdown-item" href="#" th:href="@{/logout}"
+                               th:text="#{header.logOut}">
+                                Log out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown d-inline-flex align-items-center justify-content-center" th:with="currentLang=${#locale.language}">
+                    <a class="nav-link dropdown-toggle pr-0 py-0 h-100 d-inline-flex align-items-center "
+                       id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <img src="../../static/pic/flags/en.png" th:src="@{/pic/flags/{name}(name=${currentLang}+'.png')}" alt="Eng"
+                             class="flag"
+                             th:alt="#{header.lang.__${currentLang}__}">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right bg-dark border-light pull-left align-items-center text-left scroll-after-sm"
+                        aria-labelledby="navbarDropdownMenuLink">
+                        <li th:each="lang : ${new String[]{'uk', 'en'}}">
+                            <!--/*@thymesVar id="lang" type="java.lang.String"*/-->
+                            <a href="#" class="dropdown-item" th:href="@{__${url}__(lang=${lang})}">
+                                <div class="row no-gutters">
+                                    <div class="col d-flex align-items-center justify-content-center text-primary"
+                                         th:text="#{header.lang.__${lang}__}">
+                                        Ukr
+                                    </div>
+                                    <div class="col-5 text-center">
+                                        <img src="../../static/pic/flags/uk.png" alt="Ukr"
+                                             th:src="@{/pic/flags/{name}(name=${lang}+'.png')}" th:alt="#{header.lang.__${lang}__}"
+                                             class="small-flag">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<div th:replace="~{fragments/profiles/activeProfile :: bottomScripts}" th:remove="tag">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha256-ZvOgfh+ptkpoa2Y4HkRY28ir89u/+VRyDE7sB7hEEcI="
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>

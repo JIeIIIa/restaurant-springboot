@@ -8,6 +8,7 @@
     <title>Hello</title>
 </head>
 <body>
+<nav th:replace="~{fragments/default-page :: header (activeItem = 'Test')}">HEADER</nav>
 <h1 th:text="HelloWorld">some text</h1>
 
 <div th:replace="~{fragments/profiles/activeProfile :: bottomScripts}" th:remove="tag"></div>
