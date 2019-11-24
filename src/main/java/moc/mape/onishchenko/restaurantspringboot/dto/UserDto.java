@@ -1,16 +1,51 @@
 package moc.mape.onishchenko.restaurantspringboot.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
+import moc.mape.onishchenko.restaurantspringboot.transfer.AdminEditing;
+import moc.mape.onishchenko.restaurantspringboot.transfer.ChangePassword;
+import moc.mape.onishchenko.restaurantspringboot.transfer.Exist;
+import moc.mape.onishchenko.restaurantspringboot.transfer.New;
+import moc.mape.onishchenko.restaurantspringboot.validator.ConfirmedPassword;
+import moc.mape.onishchenko.restaurantspringboot.validator.EqualPasswords;
+import moc.mape.onishchenko.restaurantspringboot.validator.UniqueLogin;
 
-public class UserDto {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@EqualPasswords(
+        groups = {New.class, ChangePassword.class}, message = "{EqualPasswords}")
+public class UserDto implements ConfirmedPassword {
+    @JsonView(value = {Exist.class})
     private Long id;
 
-    private String Login;
+    @NotNull(message = "{NotNull.login}", groups = {New.class, Exist.class})
+    @Size(min = 4, max = 30, message = "{Size.login}",
+            groups = {New.class, Exist.class})
+    @Pattern(regexp = "[\\d\\p{L}.]+", message = "Pattern.login",
+            groups = {New.class, Exist.class})
+    @UniqueLogin(groups = New.class)
+    @JsonView(value = {AdminEditing.class})
+    private String login;
 
-    private String Password;
+    @NotNull(message = "{NotNull.oldPassword}", groups = {ChangePassword.class})
+    @Size(min = 6, max = 65, message = "{Size.password}",
+            groups = {ChangePassword.class})
+    @JsonView(value = {ChangePassword.class})
+    private String oldPassword;
 
+    @NotNull(message = "{NotNull.password}", groups = {New.class, ChangePassword.class})
+    @Size(min = 6, max = 65, message = "{Size.password}",
+            groups = {New.class, ChangePassword.class})
+    @JsonView(value = {ChangePassword.class})
+    private String password;
+
+    @JsonView(value = {ChangePassword.class})
     private String passwordConfirmation;
 
+    @NotNull(message = "{NotNull.role}", groups = {AdminEditing.class})
+    @JsonView(value = {AdminEditing.class})
     private UserRole role;
 
     public Long getId() {
@@ -22,19 +57,27 @@ public class UserDto {
     }
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public void setLogin(String login) {
-        Login = login;
+        this.login = login;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getPasswordConfirmation() {
@@ -57,7 +100,7 @@ public class UserDto {
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", Login='" + Login + '\'' +
+                ", login='" + login + '\'' +
                 ", role=" + role +
                 '}';
     }

@@ -19,7 +19,7 @@ public class LocalizationConfiguration {
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:/i18n/messages");
+        messageSource.setBasenames("classpath:/i18n/messages", "classpath:/i18n/validator");
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setUseCodeAsDefaultMessage(true);
         if (cacheDuration != null) {
