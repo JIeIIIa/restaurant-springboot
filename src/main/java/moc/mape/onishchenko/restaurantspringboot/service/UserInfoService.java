@@ -4,18 +4,25 @@ import moc.mape.onishchenko.restaurantspringboot.dto.UserDto;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserInfo;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
 import moc.mape.onishchenko.restaurantspringboot.repository.UserInfoRepository;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.io.ByteStreams.toByteArray;
 import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
 public class UserInfoService {
+    private static final String DEFAULT_AVATAR_FILENAME = "defaultAvatar.png";
+    private byte[] defaultAvatar = loadDefaultAvatar();
+
     private final UserInfoRepository userInfoRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -88,5 +95,31 @@ public class UserInfoService {
         Optional<UserInfo> user = userInfoRepository.findByLoginUser(login);
 
         return user.isPresent();
+    }
+
+    public byte[] retrieveAvatar(String login) {
+        return userInfoRepository.findByLoginUser(login)
+                .map(UserInfo::getAvatar)
+                .orElse(this.defaultAvatar);
+    }
+
+    private byte[] loadDefaultAvatar() {
+        ClassPathResource resource = new ClassPathResource(DEFAULT_AVATAR_FILENAME);
+        try (InputStream is = resource.getInputStream()) {
+            return toByteArray(is);
+        } catch (IOException e) {
+            return new byte[0];
+        }
+    }
+
+    @Transactional
+    public boolean updateAvatar(UserDto userDto) {
+        return userInfoRepository.findByLoginUser(userDto.getLogin())
+                .map(u -> {
+                    u.setAvatar(userDto.getAvatarAsBytes());
+                    return u;
+                })
+                .map(userInfoRepository::saveAndFlush)
+                .isPresent();
     }
 }

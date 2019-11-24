@@ -1,5 +1,8 @@
 package moc.mape.onishchenko.restaurantspringboot.entity;
 
+import org.hibernate.annotations.Type;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -25,6 +28,13 @@ public class UserInfo {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole role;
+
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    @Nullable
+    @Basic(fetch = FetchType.LAZY)
+    @Column(length = 1_048_576)         /*max length == 1Mb*/
+    private byte[] avatar;
 
     public Long getId() {
         return id;
@@ -56,6 +66,14 @@ public class UserInfo {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     @Override

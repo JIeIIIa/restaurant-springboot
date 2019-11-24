@@ -1,18 +1,18 @@
 package moc.mape.onishchenko.restaurantspringboot.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
-import moc.mape.onishchenko.restaurantspringboot.transfer.AdminEditing;
-import moc.mape.onishchenko.restaurantspringboot.transfer.ChangePassword;
-import moc.mape.onishchenko.restaurantspringboot.transfer.Exist;
-import moc.mape.onishchenko.restaurantspringboot.transfer.New;
+import moc.mape.onishchenko.restaurantspringboot.transfer.*;
 import moc.mape.onishchenko.restaurantspringboot.validator.ConfirmedPassword;
 import moc.mape.onishchenko.restaurantspringboot.validator.EqualPasswords;
 import moc.mape.onishchenko.restaurantspringboot.validator.UniqueLogin;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 
 @EqualPasswords(
         groups = {New.class, ChangePassword.class}, message = "{EqualPasswords}")
@@ -47,6 +47,10 @@ public class UserDto implements ConfirmedPassword {
     @NotNull(message = "{NotNull.role}", groups = {AdminEditing.class})
     @JsonView(value = {AdminEditing.class})
     private UserRole role;
+
+    @NotNull(message = "NotNull.avatar", groups = {ChangeAvatar.class})
+    @JsonIgnore
+    private MultipartFile avatar;
 
     public Long getId() {
         return id;
@@ -94,6 +98,19 @@ public class UserDto implements ConfirmedPassword {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public void setAvatar(MultipartFile avatar) {
+        this.avatar = avatar;
+    }
+
+    @JsonIgnore
+    public byte[] getAvatarAsBytes() {
+        try {
+            return avatar.getBytes();
+        } catch (IOException | NullPointerException e) {
+            return null;
+        }
     }
 
     @Override
