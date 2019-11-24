@@ -83,4 +83,10 @@ public class UserInfoService {
         userInfo.setLoginUser(userDto.getLogin());
         userInfo.setRole(userDto.getRole());
     }
+
+    public boolean existsByLogin(String login) {
+        Optional<UserInfo> user = userInfoRepository.findByLoginUser(login);
+
+        return user.isPresent();
+    }
 }

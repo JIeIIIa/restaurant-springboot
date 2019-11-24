@@ -3,12 +3,15 @@ package moc.mape.onishchenko.restaurantspringboot.controller;
 import moc.mape.onishchenko.restaurantspringboot.dto.UserDto;
 import moc.mape.onishchenko.restaurantspringboot.entity.UserRole;
 import moc.mape.onishchenko.restaurantspringboot.service.UserInfoService;
+import moc.mape.onishchenko.restaurantspringboot.transfer.New;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,13 +49,12 @@ public class RegistrationController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView registrationNewUser(@ModelAttribute(NEW_USER_ATTRIBUTE_NAME) UserDto userDto,
+    public ModelAndView registrationNewUser(@Validated(New.class) @ModelAttribute(NEW_USER_ATTRIBUTE_NAME) UserDto userDto,
+                                            BindingResult bindingResult,
                                             ModelAndView modelAndView,
                                             HttpServletRequest request) {
-        if (false) {
+        if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
-            userDto.setPassword("");
-            userDto.setPasswordConfirmation("");
             modelAndView.addObject(NEW_USER_ATTRIBUTE_NAME, userDto);
 
             return modelAndView;

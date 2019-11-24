@@ -4,7 +4,8 @@
       lang="en">
 
 
-<head>
+<head th:replace="~{fragments/profiles/activeProfile :: head (pageTitle = #{pages.registration.head.title})}"
+      th:remove="tag">
     <title>Registration</title>
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -12,39 +13,73 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
+<nav th:replace="~{fragments/default-page :: header (activeItem = 'signIn')}">HEADER</nav>
 
-<h2 class="card-title font-weight-bold">
-    Registration
-</h2>
-<!--/*@thymesVar id="userDto" type="moc.mape.onishchenko.restaurantspringboot.dto.UserDto"*/-->
-<form action="#" th:action="@{/registration}" th:object="${userDto}" method="POST">
-    <div>
-        <label for="login">
-            Login
-        </label>
-        <input type="text" id="login"
-               th:field="*{login}">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10 offset-1 col-md-8 offset-md-2">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-center">
+                    <h2 class="card-title font-weight-bold">
+                        Registration
+                    </h2>
+                </div>
+                <div class="card-body bg-dark">
+                    <!--/*@thymesVar id="userDto" type="moc.mape.onishchenko.restaurantspringboot.dto.UserDto"*/-->
+                    <form action="#" th:action="@{/registration}" th:object="${userDto}" method="POST">
+                        <div class="form-group">
+                            <label for="login" th:for="*{login}" class="control-label" th:text="#{user.login}">
+                                Login
+                            </label>
+                            <input class="form-control bg-light" type="text"
+                                   placeholder="Login" th:placeholder="#{user.login}"
+                                   id="login" th:field="*{login}">
+                            <div class="mt-2" th:if="${#fields.hasErrors('login')}"
+                                 th:each="error : ${#fields.errors('login')}">
+                                <div th:replace="~{fragments/alertItem :: smallAlert(${error})}" th:remove="tag"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" th:for="*{password}" class="control-label" th:text="#{user.password}">
+                                Password
+                            </label>
+                            <input class="form-control bg-light" type="text"
+                                   th:type="${#arrays.contains(@environment.getActiveProfiles(),'dev') ? 'text' : 'password'} "
+                                   placeholder="Password" th:placeholder="#{user.password}"
+                                   id="password" th:field="*{password}"/>
+                            <div class="mt-2" th:if="${#fields.hasErrors('password')}"
+                                 th:each="error : ${#fields.errors('password')}">
+                                <div th:replace="~{fragments/alertItem :: smallAlert(${error})}" th:remove="tag"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordConfirmation" th:for="*{passwordConfirmation}" class="control-label" th:text="#{user.passwordConfirmation}">
+                                Confirmation
+                            </label>
+                            <input class="form-control bg-light" type="text"
+                                   th:type="${#arrays.contains(@environment.getActiveProfiles(),'dev') ? 'text' : 'password'} "
+                                   placeholder="Confirmation" th:placeholder="#{user.passwordConfirmation}"
+                                   id="passwordConfirmation" th:field="*{passwordConfirmation}"/>
+                            <div class="mt-2" th:if="${#fields.hasGlobalErrors()}"
+                                 th:each="error : ${#fields.globalErrors()}">
+                                <div th:replace="~{fragments/alertItem :: smallAlert(${error})}" th:remove="tag"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <button type="submit" class="btn btn-success form-control col-8 offset-2"
+                                    th:text="#{btn.registration}">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <label for="password">
-            Password
-        </label>
-        <input type="text" id="password"
-               th:field="*{password}"/>
-    </div>
-
-    <div>
-        <label for="passwordConfirmation">
-            Confirmation
-        </label>
-        <input type="text" id="passwordConfirmation"
-               th:field="*{passwordConfirmation}"/>
-    </div>
-
-    <button type="submit">
-        Register
-    </button>
-</form>
+</div>
+<div th:replace="~{fragments/profiles/activeProfile :: bottomScripts}" th:remove="tag"></div>
 </body>
 </html>
