@@ -2,7 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       lang="en">
-<head>
+
+<head th:replace="~{fragments/profiles/activeProfile :: head (pageTitle = #{pages.auth.head.title})}"
+      th:remove="tag">
+
     <title>Login</title>
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -12,38 +15,69 @@
 </head>
 
 <body>
+<nav th:replace="~{fragments/default-page :: header (activeItem = 'signIn')}">HEADER</nav>
 
-<h2>
-    Authorization
-</h2>
-<form th:action="@{/j_spring_security_check}" method="POST">
-    <!--/*@thymesVar id="securityLastExceptionMessage" type="java.lang.String"*/-->
-    <div th:if="${securityLastExceptionMessage}">
-        <div th:text="${securityLastExceptionMessage}">Error</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-10 offset-1 col-md-8 offset-md-2">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-center">
+                    <h2 class="card-title font-weight-bold"
+                        th:text="#{pages.auth.card.header}">
+                        Authorization
+                    </h2>
+                </div>
+                <div class="card-body bg-dark">
+                    <form th:action="@{/j_spring_security_check}" method="POST">
+                        <!--/*@thymesVar id="securityLastExceptionMessage" type="java.lang.String"*/-->
+                        <div class="form-group mb-0" th:if="${securityLastExceptionMessage}">
+                            <div th:replace="~{fragments/alertItem :: smallAlert(${securityLastExceptionMessage})}" th:remove="tag"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="j_login" class="control-label"
+                                   th:text="#{user.login}">
+                                Login
+                            </label>
+                            <input class="form-control bg-light" type="text"
+                                   placeholder="Login" th:placeholder="#{user.login}"
+                                   id="j_login" name="j_login">
+                        </div>
+                        <div class="form-group">
+                            <label for="j_password" class="control-label"
+                                   th:text="#{user.password}">
+                                Password
+                            </label>
+                            <input class="form-control bg-light" type="Password"
+                                   placeholder="Password" th:placeholder="#{user.password}"
+                                   id="j_password" name="j_password">
+                        </div>
+                        <div class="form-group row">
+                            <button type="submit" class="btn btn-success form-control col-8 offset-2"
+                                    th:text="#{btn.signIn}">
+                                Log In
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="form-group row justify-content-center">
+                        <div class="col-6 border-top border-primary"></div>
+                    </div>
+                    <div class="form-group text-center">
+                        <span th:text="#{pages.auth.noAccount}">Don’t have an account?</span>
+                        <a class="text-info"
+                           th:href="@{/registration}"
+                           th:text="#{btn.registration}">
+                            Sing up
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="j_login" th:text="#{user.login}">Login</label>
-        <input type="text"
-               id="j_login" name="j_login">
-    </div>
-    <div>
-        <label for="j_password" th:text="#{user.password}">
-            Password
-        </label>
-        <input id="j_password" name="j_password">
-    </div>
-    <div>
-        <button type="submit">
-            Log In
-        </button>
-    </div>
-</form>
-<div>
-    <span>Don’t have an account?</span>
-    <a th:href="@{/registration}">
-        Sing up
-    </a>
 </div>
+
+<div th:replace="~{fragments/profiles/activeProfile :: bottomScripts}" th:remove="tag"></div>
 
 </body>
 </html>
