@@ -49,6 +49,8 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/pic/**")
                 .addResourceLocations("classpath:/static/pic/");
+        registry.addResourceHandler("/static/favicon.ico")
+                .addResourceLocations("classpath:/static/favicon.ico");
         registry.addResourceHandler("swagger-ui.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
     }
