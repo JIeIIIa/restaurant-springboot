@@ -122,4 +122,31 @@ public class UserInfoService {
                 .map(userInfoRepository::saveAndFlush)
                 .isPresent();
     }
+
+    @Transactional
+    public boolean deleteAvatar(String login) {
+        final UserDto userDto = new UserDto();
+        userDto.setLogin(login);
+        return updateAvatar(userDto);
+    }
+
+    public boolean setNewPassword(UserDto userDto) {
+        return userInfoRepository.findByLoginUser(userDto.getLogin())
+                .filter(u -> passwordEncoder.matches(userDto.getOldPassword(), u.getPasswordUser()))
+                .map(u -> updatePassword(u, userDto.getPassword()))
+                .orElse(false);
+    }
+
+    private Boolean updatePassword(UserInfo userInfo, String password) {
+        cryptPassword(userInfo, password);
+        userInfoRepository.save(userInfo);
+
+        return true;
+    }
+
+    private void cryptPassword(UserInfo user, String password) {
+        if (password != null) {
+            user.setPasswordUser(passwordEncoder.encode(password));
+        }
+    }
 }
