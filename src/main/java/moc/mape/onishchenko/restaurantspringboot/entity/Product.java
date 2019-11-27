@@ -1,11 +1,18 @@
 package moc.mape.onishchenko.restaurantspringboot.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product implements Serializable {
     @Id
     @GeneratedValue(generator = "productIdSequence")
